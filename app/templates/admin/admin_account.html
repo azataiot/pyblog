@@ -1,25 +1,25 @@
 {% extends 'admin/admin_base.html' %}
 
 {% block title %}
-    Blog_mini -欢迎来到Blog_mini管理平台！
+    Pyblog -Welcome back to Dashboard！
 {% endblock %}
 
 {% block admin_content %}
 <div class="entry-box account">
-    <h4><strong><i>{{ current_user.username }}</i>，欢迎来到Blog_mini管理平台！</strong></h4>
+    <h4><strong><i>{{ current_user.username }}</i>，welcome back to Pyblog！</strong></h4>
     <hr/>
     <div class="user-info">
         <img class="img-rounded profile-thumbnail" src="{{ current_user.gravatar(size=128) }}">
         <div class="profile-header">
-            <h5>昵称：</h5>
+            <h5>name：</h5>
             <h4 class="username">{{ current_user.username }}</h4>
-            <h5>电子邮件：</h5>
+            <h5>email：</h5>
             <h4 class="email">{{ current_user.email }}</h4>
             <a class="btn btn-sm btn-danger" onclick="changePassword()">
-                修改密码
+                change password
             </a>
             <a class="btn btn-sm btn-info" onclick="EditUserInfo()">
-                修改信息
+                change info
             </a>
         </div>
     </div>
@@ -48,8 +48,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button id="changePasswordCfmClick" type="submit" class="btn btn-success">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                    <button id="changePasswordCfmClick" type="submit" class="btn btn-success">yes</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
@@ -79,8 +79,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button id="editUserInfoCfmClick" type="submit" class="btn btn-success">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                    <button id="editUserInfoCfmClick" type="submit" class="btn btn-success">yes</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

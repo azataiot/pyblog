@@ -184,9 +184,9 @@ class Source(db.Model):
 
     @staticmethod
     def insert_sources():
-        sources = (u'原创',
-                   u'转载',
-                   u'翻译')
+        sources = (u'original',
+                   u'shared',
+                   u'translated')
         for s in sources:
             source = Source.query.filter_by(name=s).first()
             if source is None:

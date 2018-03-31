@@ -2,23 +2,23 @@
 {% import "_macros.html" as macros %}
 
 {% block title %}
-    Blog_mini -博文评论
+    Pyblog -comments
 {% endblock %}
 
 {% block admin_content %}
 <div class="entry-box manage-comments">
-    <h4><strong>博文评论</strong></h4>
+    <h4><strong>blog comments</strong></h4>
     <hr/>
-    <p><span class="glyphicon glyphicon-comment"></span>评论总数：<span class="badge">{{ Comment.query.count() }}</span></p>
+    <p><span class="glyphicon glyphicon-comment"></span>all comments：<span class="badge">{{ Comment.query.count() }}</span></p>
     <div class="handle-box-admin">
         <form id="delCommentsForm" method="post" action="{{ url_for('admin.delete_comments', page=page) }}">
             {{ form2.csrf_token }}
             {{ form2.commentIds(type='hidden') }}
         </form>
         <input type="checkbox" id="select-all" name="select-all" class="select-comments-admin">
-        <label for="select-all">全选</label>
+        <label for="select-all">select all</label>
         <a class="btn btn-sm btn-danger delComments" id="delComments">
-            <span class="glyphicon glyphicon-trash"></span>批量删除
+            <span class="glyphicon glyphicon-trash"></span>multi delete
         </a>
     </div>
     <ul class="comments">
@@ -34,28 +34,28 @@
                     {{ comment.author_name }}
                     {{ comment.author_email }}
                     {% if User.query.filter_by(email=comment.author_email).count() %}
-                        <span class="glyphicon glyphicon-user">管理员</span>
+                        <span class="glyphicon glyphicon-user">admin</span>
                     {% endif %}
                 </span>
                 <span>
-                    在《<a href="{{ url_for('main.articleDetails', id=comment.article.id) }}" target="_blank">{{ comment.article.title }}</a>》
-                    发表评论：
+                    in《<a href="{{ url_for('main.articleDetails', id=comment.article.id) }}" target="_blank">{{ comment.article.title }}</a>》
+                    commented：
                 </span>
-                <a class="btn btn-sm btn-info comment-handle-admin" title="回复评论"
+                <a class="btn btn-sm btn-info comment-handle-admin" title="reply"
                    onclick="pop_commentForm('{{ comment.id }}', '{{ comment.article.id }}')">
                     <span class="glyphicon glyphicon-comment"></span>
                 </a>
-                <a class="btn btn-sm btn-danger comment-handle-admin delete-comment-admin-btn"  title="删除评论"
+                <a class="btn btn-sm btn-danger comment-handle-admin delete-comment-admin-btn"  title="delete"
                    onclick="delCommentCfm('{{ url_for('admin.delete_comment', id=comment.id, page=page, delete_type='admin') }}')">
                     <span class="glyphicon glyphicon-trash"></span>
                 </a>
                 {% if comment.disabled == True %}
-                    <a class="btn btn-sm btn-success comment-handle-admin enabled-comment-admin-btn" title="恢复评论"
+                    <a class="btn btn-sm btn-success comment-handle-admin enabled-comment-admin-btn" title="recover"
                        href="{{ url_for('admin.enable_comment', id=comment.id, page=page, enable_type='admin') }}">
                         <span class="glyphicon glyphicon-ok-sign"></span>
                     </a>
                 {% else %}
-                    <a class="btn btn-sm btn-warning comment-handle-admin disabled-comment-admin-btn" title="屏蔽评论"
+                    <a class="btn btn-sm btn-warning comment-handle-admin disabled-comment-admin-btn" title="hide comment"
                        href="{{ url_for('admin.disable_comment', id=comment.id, page=page, disable_type='admin') }}">
                         <span class="glyphicon glyphicon-remove-sign"></span>
                     </a>
@@ -69,12 +69,12 @@
                     {% if comment.comment_type == 'reply' %}
                         <p class="comment-reply-info">
                             <span class="glyphicon glyphicon-envelope"></span>
-                            回复给<strong><i>
+                            replied to<strong><i>
                             {% if comment.followed_name() %}
                                 {{ comment.followed_name() }}
                             {% else %}
                                 {{ comment.reply_to }}
-                                ({{ comment.reply_to }}的该条评论已经被删除！)
+                                ({{ comment.reply_to }}content deleted！)
                             {% endif %}
                             ：</i></strong>
                         </p>
@@ -83,7 +83,7 @@
                     {% if comment.disabled == True %}
                         <p class="disabled-comment-admin-info">
                             <span class="glyphicon glyphicon-remove-sign"></span>
-                            <i>该评论已在博文页面中屏蔽！</i>
+                            <i>hided！</i>
                         </p>
                     {% endif %}
                 </div>
@@ -103,19 +103,19 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-                <h4 class="modal-title">确认删除评论？</h4>
+                <h4 class="modal-title">delete now？</h4>
             </div>
             <div class="modal-body">
                 <p>
-                    将该评论删除后不可恢复，您确认要删除吗？
+                    you wanna delete ?？
                 </p>
                 <p>
-                    （提示：如果您只是不想显示该评论内容，可以选择将其屏蔽，而不必删除。）
+                    （inf：you can either delete or hide the comment）
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a onclick="" id="delCommentCfmClick" class="btn btn-success" data-dismiss="modal">确定</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                <a onclick="" id="delCommentCfmClick" class="btn btn-success" data-dismiss="modal">sure</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -128,14 +128,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-                <h4 class="modal-title">未选择评论</h4>
+                <h4 class="modal-title">unselected</h4>
             </div>
             <div class="modal-body">
-                <p>请选择您要删除的评论！</p>
+                <p>select comments to delete！</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a class="btn btn-success" data-dismiss="modal">确定</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                <a class="btn btn-success" data-dismiss="modal">ok</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -148,17 +148,17 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-                <h4 class="modal-title">确认删除所选评论？</h4>
+                <h4 class="modal-title">wanna delete？</h4>
             </div>
             <div class="modal-body">
-                <p>将评论删除后不可恢复，您确认要删除所选评论吗？</p>
+                <p>will be deleted and can not be restored ,are you sure？</p>
                 <p>
-                    （提示：如果您只是不想显示该评论内容，可以选择将其屏蔽，而不必删除。）
+                    （inf：you can hide them also）
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a id="delComsCfm" class="btn btn-success" data-dismiss="modal">确定</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                <a id="delComsCfm" class="btn btn-success" data-dismiss="modal">sure</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -171,7 +171,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-                <h4 class="modal-title">提交评论（管理员）</h4>
+                <h4 class="modal-title">submit（admin）</h4>
             </div>
             <form id="commentForm" method="post" action="">
                 <div class="modal-body">
@@ -189,8 +189,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="submit" id="subCommentCfmClick" class="btn btn-success">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                    <button type="submit" id="subCommentCfmClick" class="btn btn-success">ok</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

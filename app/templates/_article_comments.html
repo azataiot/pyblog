@@ -5,12 +5,12 @@
             {% if comment.comment_type == 'reply' %}
                 <p class="comment-reply-info">
                     <span class="glyphicon glyphicon-envelope"></span>
-                    回复给<strong><i>
+                    replied to<strong><i>
                     {% if comment.followed_name() %}
                         {{ comment.followed_name() }}
                     {% else %}
                         {{ comment.reply_to }}
-                        ({{ comment.reply_to }}的该条评论已经被删除！)
+                        ({{ comment.reply_to }}content deleted！)
                     {% endif %}
                     ：</i></strong>
                 </p>
@@ -23,7 +23,7 @@
                 <div class="comment-author">
                     <span>{{ comment.author_name }}</span>
                     {% if User.query.filter_by(email=comment.author_email).count() %}
-                        <span class="glyphicon glyphicon-user">管理员</span>
+                        <span class="glyphicon glyphicon-user">admin</span>
                     {% endif %}
                 </div>
                 <div class="comment-content">
@@ -33,12 +33,12 @@
                     {% if comment.disabled == True and current_user.is_authenticated %}
                         <p class="disabled-comment-admin-info">
                             <span class="glyphicon glyphicon-remove-sign"></span>
-                            <i>该评论已经被管理员屏蔽！访客无法查看和回复此评论内容。</i>
+                            <i>this is a deleted comment ,visitors can not see this</i>
                         </p>
                     {% elif comment.disabled == True %}
                         <p class="disabled-comment-admin-info">
                             <span class="glyphicon glyphicon-remove-sign"></span>
-                            <i>该评论已经被管理员屏蔽！</i>
+                            <i>this is a spammed comment！</i>
                         </p>
                     {% endif %}
                 </div>
@@ -49,26 +49,26 @@
                     {% if comment.disabled == False %}
                     <a class="btn btn-sm btn-warning"
                        href="{{ url_for('admin.disable_comment', id=comment.id, page=page) }}">
-                        <span class="glyphicon glyphicon-remove-sign"></span> 屏蔽
+                        <span class="glyphicon glyphicon-remove-sign"></span> spam
                     </a>
                     {% else %}
                     <a class="btn btn-sm btn-success"
                        href="{{ url_for('admin.enable_comment', id=comment.id, page=page) }}">
-                        <span class="glyphicon glyphicon-ok-sign"></span> 恢复
+                        <span class="glyphicon glyphicon-ok-sign"></span> restore
                     </a>
                     {% endif %}
                 </div>
                 <div class="col-sm-1 delete-comment">
                     <button class="btn btn-sm btn-danger"
                             onclick="delCommentCfm('{{ url_for('admin.delete_comment', id=comment.id, page=page) }}')">
-                        <span class="glyphicon glyphicon-trash"></span> 删除
+                        <span class="glyphicon glyphicon-trash"></span> delete
                     </button>
                 </div>
                 {% endif %}
                 {% if comment.disabled == False or current_user.is_authenticated %}
                 <div class="col-sm-1 {% if current_user.is_anonymous %}col-sm-offset-10{% endif %}">
                     <button class="btn btn-sm btn-info" onclick="go_to_reply({{ comment.id }}, '{{ comment.author_name }}')">
-                        <span class="glyphicon glyphicon-comment"></span> 回复
+                        <span class="glyphicon glyphicon-comment"></span> reply
                     </button>
                 </div>
                 {% endif %}
@@ -77,7 +77,7 @@
         {% endfor %}
     {% else %}
         <li class="comment">
-            <div class="comment-content">暂无评论</div>
+            <div class="comment-content">nothing~</div>
         </li>
     {% endif %}
 </ul>
@@ -89,19 +89,19 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-                <h4 class="modal-title">确认删除评论？</h4>
+                <h4 class="modal-title">delete？</h4>
             </div>
             <div class="modal-body">
                 <p>
-                    将该评论删除后不可恢复，您确认要删除吗？
+                    are you sure？
                 </p>
                 <p>
-                    （提示：如果您只是不想显示该评论内容，可以选择将其屏蔽，而不必删除。）
+                    （can not be restored after delete）
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a onclick="" id="delCommentCfmClick" class="btn btn-success" data-dismiss="modal">确定</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                <a onclick="" id="delCommentCfmClick" class="btn btn-success" data-dismiss="modal">delete</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
